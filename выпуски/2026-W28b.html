@@ -60,7 +60,6 @@
   .dline .ru.hid{display:none}
   .dline .pl{border:none; background:#eee9e0; border-radius:50%; width:34px; height:34px; cursor:pointer; font-size:14px; flex-shrink:0}
   .tag{display:inline-block; background:#eef4ff; color:var(--acc); border-radius:6px; font-size:12px; padding:2px 8px; margin-left:8px; vertical-align:middle}
-  .hide{display:none}
   footer{text-align:center; color:var(--mut); font-size:12.5px; padding:20px}
 </style>
 </head>
@@ -137,13 +136,6 @@ function cardHTML(w,cls=''){
   return `<div class="card ${cls}" data-id="${w.id}"><span class="cnum">${w.n}</span>${inner}
     <div class="lbl"><b>${w.greek}</b><span class="ru">${w.ru}</span></div></div>`;
 }
-function ctxHTML(){
-  if(!ctxWords.length) return '';
-  return `<div class="panel"><h3>Без картинки — почувствуй в контексте</h3>`+
-    ctxWords.map(w=>`<div class="ctxword"><span class="gr">${w.greek}</span> — <span class="ru">${w.ru}</span>
-      ${w.note?`<div class="note">💡 ${w.note}</div>`:''}
-      ${w.example_gr?`<div class="ex">${w.example_gr}<div class="t">${w.example_ru||''}</div></div>`:''}</div>`).join('')+`</div>`;
-}
 function wordListHTML(){
   let firstCtx=true;
   return `<div class="wordlist">`+
@@ -170,7 +162,7 @@ function runCards(){
 function runScene(){
   stopAudio();
   const D=DATA.dialogue;
-  const markRe=DATA.stems.length?new RegExp('('+DATA.stems.join('|')+')[\\wά-ώΆ-Ώ]*','giu'):null;
+  const markRe=DATA.stems.length?new RegExp('(?<![\\wά-ώΆ-Ώ])('+DATA.stems.join('|')+')[\\wά-ώΆ-Ώ]*','giu'):null;
   const mark=t=>markRe?t.replace(markRe,'<mark>$&</mark>'):t;
   $('#main').innerHTML=`
     <div class="panel">
